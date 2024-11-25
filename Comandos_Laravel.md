@@ -79,12 +79,6 @@ Este documento contém uma lista de comandos úteis no desenvolvimento de aplica
 
 ---
 
-## **Recursos Adicionais**
-
-- [**Refresh Laravel**](./Refresh_Laravel.md): Guia para reiniciar seu projeto Laravel de forma segura.  
-- [**Resolver Erros do Laravel Herd**](./Resolver_Erros_Laravel_Herd.md): Soluções para problemas comuns enfrentados ao usar Laravel com o Herd.
-
----
 
 ## **Como Utilizar?**
 

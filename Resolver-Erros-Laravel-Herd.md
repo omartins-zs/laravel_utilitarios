@@ -1,4 +1,3 @@
-
 # Resolver Erros do Laravel Herd
 
 Este documento oferece soluções para erros comuns enfrentados ao usar Laravel com o Herd.
@@ -47,5 +46,35 @@ Este documento oferece soluções para erros comuns enfrentados ao usar Laravel 
 
 ---
 
-Para mais dúvidas ou problemas, sinta-se à vontade para procurar ajuda na [documentação oficial do Laravel](https://laravel.com/docs) ou em comunidades de desenvolvedores.
+## **Erro: Mixed Content (Laravel)**
 
+**Mensagem de Erro:**  
+`Erro bloqueado mixed-content (Mixed Content)`
+
+### **Resolução**
+
+1. **Forçar HTTPS no Laravel:**  
+   No arquivo `AppServiceProvider`, adicione o seguinte código no método `boot`:  
+
+   ```php
+   public function boot(UrlGenerator $url)
+   {
+       if(env('APP_ENV') !== 'local')
+       {
+           $url->forceScheme('https');
+       }
+   }
+   ```
+
+   ou
+
+   ```php
+   public function boot()
+   {
+       URL::forceScheme('https');
+   }
+   ```
+
+---
+
+Para mais dúvidas ou problemas, sinta-se à vontade para procurar ajuda na [documentação oficial do Laravel](https://laravel.com/docs) ou em comunidades de desenvolvedores.

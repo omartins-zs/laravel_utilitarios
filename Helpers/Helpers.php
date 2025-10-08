@@ -1,0 +1,84 @@
+<?php
+
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Log;
+
+if (!function_exists('isLocal')) {
+    /**
+     * Verifica se o ambiente é local.
+     */
+    function isLocal(): bool
+    {
+        return config('app.env') === 'local';
+    }
+}
+
+if (!function_exists('processErrorBehaviour')) {
+    /**
+     * Trata erros/exceções com log local e envio ao Sentry.
+     */
+    function processErrorBehaviour(Throwable $e): void
+    {
+        if (isLocal()) {
+            Log::error('Erro capturado (local)', [
+                'message' => $e->getMessage(),
+                'file'    => $e->getFile(),
+                'line'    => $e->getLine(),
+            ]);
+
+            dd($e->getMessage(), $e->getFile(), $e->getLine());
+        } else {
+            if (app()->bound('sentry')) {
+                app('sentry')->captureException($e);
+            }
+
+            Log::error('Erro capturado (produção)', [
+                'message' => $e->getMessage(),
+                'file'    => $e->getFile(),
+                'line'    => $e->getLine(),
+            ]);
+        }
+    }
+}
+
+if (!function_exists('processErrorBehaviourSimples')) {
+    /**
+     * Trata erros/exceções de forma simples.
+     */
+    function processErrorBehaviourSimples(Throwable $e): void
+    {
+        if (isLocal()) {
+            dd($e->getMessage(), $e->getFile(), $e->getLine());
+        } else {
+            if (app()->bound('sentry')) {
+                app('sentry')->captureException($e);
+            }
+        }
+    }
+}
+
+if (!function_exists('defineStorageDisk')) {
+    /**
+     * Define o disco de storage conforme o ambiente.
+     */
+    function defineStorageDisk(string $disk = 's3'): string
+    {
+        return isLocal() ? 'local' : $disk;
+    }
+}
+
+if (!function_exists('getQueriesV2')) {
+    /**
+     * Retorna SQL do Query Builder (versão aprimorada).
+     */
+    function getQueriesV2(Builder $builder): string
+    {
+        $sql = str_replace('?', "'?'", $builder->toSql());
+
+        foreach ($builder->getBindings() as $binding) {
+            $sql = preg_replace('/\?/', $binding, $sql, 1);
+        }
+
+        return $sql;
+    }
+}

@@ -1,6 +1,6 @@
 # 🧩 Registro do Helper no Laravel
 
-⚙️ **Passo 3 — Registrar o helper no autoload do Laravel**
+⚙️ **Passo 1 — Registrar o helper no autoload do Laravel**
 
 Abra o arquivo `composer.json` e adicione o caminho do helper na seção `"autoload"`:
 
@@ -10,14 +10,14 @@ Abra o arquivo `composer.json` e adicione o caminho do helper na seção `"autol
         "App\\": "app/"
     },
     "files": [
-        "app/Helpers/jhelpers.php"
+        "app/Helpers/Helpers.php"
     ]
 }
 ```
 
 ---
 
-⚡ **Passo 4 — Atualizar o autoloader**
+⚡ **Passo 2 — Atualizar o autoloader**
 
 Rode no terminal:
 

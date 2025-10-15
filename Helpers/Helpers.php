@@ -67,16 +67,40 @@ if (!function_exists('defineStorageDisk')) {
     }
 }
 
+if (!function_exists('getQueries')) {
+    /**
+     * Retorna SQL do Query Builder (versão simples).
+     */
+    function getQueries(Builder $builder): string
+    {
+        $sql = str_replace('?', "'?'", $builder->toSql());
+
+        foreach ($builder->getBindings() as $value) {
+            $sql = preg_replace('/\?/', $value, $sql, 1);
+        }
+
+        return $sql;
+    }
+}
+
 if (!function_exists('getQueriesV2')) {
     /**
      * Retorna SQL do Query Builder (versão aprimorada).
      */
     function getQueriesV2(Builder $builder): string
     {
-        $sql = str_replace('?', "'?'", $builder->toSql());
+        $sql = $builder->toSql();
 
-        foreach ($builder->getBindings() as $binding) {
-            $sql = preg_replace('/\?/', $binding, $sql, 1);
+        foreach ($builder->getBindings() as $value) {
+            if (is_string($value)) {
+                $value = "'{$value}'";
+            } elseif (is_null($value)) {
+                $value = 'NULL';
+            } elseif (is_bool($value)) {
+                $value = $value ? '1' : '0';
+            }
+
+            $sql = preg_replace('/\?/', $value, $sql, 1);
         }
 
         return $sql;

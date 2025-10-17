@@ -106,3 +106,27 @@ if (!function_exists('getQueriesV2')) {
         return $sql;
     }
 }
+
+if (! function_exists('formatBytes')) {
+    /**
+     * Converte bytes para unidade legível (B, KB, MB, GB, TB).
+     *
+     * @param int $bytes
+     * @return string
+     */
+    function formatBytes(int $bytes): string
+    {
+        $bytes = max(0, $bytes);
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+
+        if ($bytes === 0) {
+            return '0 B';
+        }
+
+        $pow = (int) floor(log($bytes, 1024));
+        $pow = min($pow, count($units) - 1);
+        $value = $bytes / (1 << (10 * $pow));
+
+        return round($value, 2) . ' ' . $units[$pow];
+    }
+}

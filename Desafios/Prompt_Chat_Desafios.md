@@ -26,7 +26,7 @@ Explique o problema, regras, fluxo esperado, entradas e saídas.
   - Controllers enxutos
   - Services para regras de negócio
   - Form Requests para validação
-- Separação clara de responsabilidades (SRP)
+- Separação clara de responsabilidades (SRP)(Isso eu não quero)
 
 2️⃣ Filas e Jobs (apenas se necessário)
 - Utilizar filas e Jobs somente se fizer sentido para o problema proposto
